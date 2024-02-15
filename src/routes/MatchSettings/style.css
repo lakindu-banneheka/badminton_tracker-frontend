@@ -1,0 +1,37 @@
+.container_ {
+    margin: 0;
+    padding: 0;
+    /* display: flex; */
+
+    height: 90%;
+    width: 100%;
+    background-image: url('../../img/bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    overflow: hidden;
+
+    flex-direction: column;
+    justify-content: flex-start;
+    justify-items: center;
+  }
+
+  .title-wrapper {
+    padding: 1rem 0px 0px 2rem;
+  }
+
+  .match-form-wrapper {
+    padding: 20px 50px;
+  }
+
+  .team-form-wrapper {
+    padding: 20px 50px;
+  }
+
+  .button-wrapper {
+    padding: 20px 50px;
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    justify-items: center;
+  }
