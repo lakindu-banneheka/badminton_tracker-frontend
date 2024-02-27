@@ -12,7 +12,7 @@ const Auth = () => {
   };
 
   const handleSignUpPageClick = () => {
-    console.log("click")
+    console.log("click");
     setIsActive(true);
   };
 

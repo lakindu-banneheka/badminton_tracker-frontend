@@ -23,7 +23,7 @@ export const matchSlice = createSlice({
   reducers: {
     newMatch: (state, action) => {
         state.matchData = action.payload
-        // console.log(state.matchData)
+        console.log(state.matchData)
     },
     scoreDecrement: (state) => {
         state.current_score -= 1
