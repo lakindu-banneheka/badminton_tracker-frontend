@@ -16,14 +16,16 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
 
 const pages = ['New Match', 'Previous Matches'];
-const settings = ['Profile', 'Logout'];
+const settings = [
+  // 'Profile', 
+  'Logout'
+];
 
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [ipAddress, setIpAddress] = useState('');
   const navigate = useNavigate();
-  let login_token = localStorage.getItem('token');
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -58,15 +60,10 @@ function NavBar() {
       }
     };
 
-    
     getIpAddress();
     
     return () => {
     };
-  }, []);
-
-  useEffect(() => {
-    login_token = localStorage.getItem('token');
   }, []);
 
   return (
@@ -171,11 +168,11 @@ function NavBar() {
 
             <>
             
-            { login_token
+            { localStorage.getItem('token')
               ?<>
                 <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                      <Avatar alt="" src="" />
                     </IconButton>
                   </Tooltip>
                   <Menu
@@ -196,7 +193,8 @@ function NavBar() {
                   >
                     {settings.map((setting) => (
                       <MenuItem key={setting} 
-                        onClick={()=>{
+                        onClick={(e)=> {
+                          e.preventDefault();
                           handleCloseUserMenu(); 
                           if(setting=='Logout'){
                             localStorage.removeItem('token');

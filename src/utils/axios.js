@@ -29,7 +29,6 @@ export default fetchData;
 const handleSignIn = async (email, password, navigate) => {
     try {
         const response = await fetchData('POST', '/auth/signin', { email, password });
-        console.log(response.userId);
         if (response.userId) {
             localStorage.setItem('token', response.userId); // Save userID or token if needed
             navigate('/new-match');
@@ -43,7 +42,6 @@ const handleSignIn = async (email, password, navigate) => {
 const handleSignUp = async (name, email, password) => {
     try {
         const response = await fetchData('POST', '/auth/signup', { name, email, password });
-        console.log(response.message);
 
         if (response.message) {
             alert(response.message);

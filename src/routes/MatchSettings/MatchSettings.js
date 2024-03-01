@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 export const initialMatchState = {
+    userId: localStorage.getItem('token')??localStorage.getItem('token'),
     tournament_name: '',
     date: getDate(),
     time: getTime(),
@@ -51,6 +52,8 @@ const MatchSettings = () => {
     const matchDataSelector = useSelector(state => state.match.matchData);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    // const userId = localStorage.getItem('token');
+
 
     // step form 
     const [step, setStep] = useState(1);
@@ -181,6 +184,18 @@ const MatchSettings = () => {
                                         name='tournament_name'
                                         onChange={(e) => handleChange(e)}
                                         required
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={4} >
+                                    <TextField 
+                                        label="User ID" 
+                                        variant="outlined" 
+                                        style={{width:'100%'}} 
+                                        type='text' 
+                                        value={matchData.userId || 'Not Loged-In'}
+                                        name='userId'
+                                        onChange={(e) => handleChange(e)}
+                                        disabled
                                     />
                                 </Grid>
                                 <Grid item xs={12} md={4}>

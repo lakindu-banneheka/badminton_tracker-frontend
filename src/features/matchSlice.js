@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 export const initialState = {
   matchData : {
+    userId: null,
     tournament_name: '',
     date: '',
     time: '',
@@ -116,7 +117,7 @@ export const matchSlice = createSlice({
       
       return newState;
     }
-    
+
   },
 })
 
