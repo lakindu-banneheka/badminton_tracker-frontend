@@ -254,19 +254,16 @@ const MatchSettings = () => {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} md={4}>
-                                <FormControl fullWidth>
-                                        <InputLabel>Age Category</InputLabel>
-                                        <Select
-                                            value={matchData.age_category}
-                                            name='age_category'
-                                            label="Age Category"
-                                            onChange={(e) => handleChange(e)}
-                                        >
-                                            <MenuItem value={'Kids'}>Kids</MenuItem>
-                                            <MenuItem value={'Junior'}>Junior</MenuItem>
-                                            <MenuItem value={'Senior'}>Senior</MenuItem>
-                                        </Select>
-                                    </FormControl>
+                                    <TextField 
+                                        label="Age Category" 
+                                        variant="outlined" 
+                                        style={{width:'100%'}} 
+                                        type='text' 
+                                        value={matchData.age_category}
+                                        name='age_category'
+                                        onChange={(e) => handleChange(e)}
+                                        required
+                                    />
                                 </Grid>
                                 <Grid item xs={12} md={4}>
                                     <TextField 

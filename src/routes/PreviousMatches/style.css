@@ -16,3 +16,70 @@
     padding: 20px 50px;
     
   }
+  
+/* Styling for the table headers */
+.MuiTableCell-head {
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Styling for the table rows */
+.MuiTableRow-root {
+  &:nth-of-type(odd) {
+    background-color: #444;
+  }
+}
+
+/* Styling for the More Details button */
+.MuiButton-containedPrimary {
+  background-color: #007bff;
+}
+
+.MuiButton-containedPrimary:hover {
+  background-color: #0056b3;
+}
+
+.search-wrapper {
+  padding: 0 50px 0 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 50%;
+}
+
+.search-input {
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  flex: 1;
+}
+
+.search-icon {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+
+.search-input:hover {
+  border-color: #999;
+  width: 250px; /* Adjusted width on hover */
+}
+
+.search-icon {
+  margin-left: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.search-wrapper:hover .search-icon {
+  transform: scale(1.1);
+}
