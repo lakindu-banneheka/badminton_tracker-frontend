@@ -13,6 +13,7 @@ import { Counter } from './routes/Counter';
 import Auth from './routes/Auth/Auth';
 import MatchSettings from './routes/MatchSettings/MatchSettings';
 import PreviousMatches from './routes/PreviousMatches/PreviousMatches';
+import MatchOperator from './routes/MatchOperator/MatchOperator';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: '/previous-matches',
     element: <PreviousMatches />
+  },
+  {
+    path: '/match-operator',
+    element: <MatchOperator />
   }
 ]);
 

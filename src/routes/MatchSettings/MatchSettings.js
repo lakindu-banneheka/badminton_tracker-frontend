@@ -12,10 +12,45 @@ import Button from '@mui/material/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { newMatch } from '../../features/matchSlice';
 import { getDate, getTime } from '../../Components/getDateTime';
+import { useNavigate } from 'react-router-dom';
+
+
+export const initialMatchState = {
+    tournament_name: '',
+    date: getDate(),
+    time: getTime(),
+
+    match_no: '',
+    match_category: '',
+    age_category: '',
+    game_point: 21,
+    interval_point: 11,
+    game_cap: 30,
+    num_of_sets: 3,
+    interval_time: 1,
+    
+    team1_name: '',
+    team1_player1_name: '',
+    team1_player2_name: '',
+    team1_country: '',
+    team1_club: '',
+
+    team2_name: '',
+    team2_player1_name: '',
+    team2_player2_name: '',
+    team2_country: '',
+    team2_club: '',
+    
+    team_1_game_points_set_i: [0],
+    team_2_game_points_set_i: [0],
+    set_winner_i: [-1], // 1 or 2 || -1
+    winner: -1
+}
 
 const MatchSettings = () => {
     const matchDataSelector = useSelector(state => state.match.matchData);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // step form 
     const [step, setStep] = useState(1);
@@ -30,35 +65,6 @@ const MatchSettings = () => {
     }
 
     // match state
-    const initialMatchState = {
-        tournament_name: '',
-        date: getDate(),
-        time: getTime(),
-    
-        match_no: '',
-        match_category: '',
-        age_category: '',
-        game_point: 21,
-        interval_point: 11,
-        game_cap: 30,
-        num_of_sets: 3,
-        
-        team1_name: '',
-        team1_player1_name: '',
-        team1_player2_name: '',
-        team1_country: '',
-        team1_club: '',
-    
-        team2_name: '',
-        team2_player1_name: '',
-        team2_player2_name: '',
-        team2_country: '',
-        team2_club: '',
-        
-        team_1_game_points_set_i: [0],
-        team_2_game_points_set_i: [0],
-        winner: ''
-    }
     const [matchData, setMatchData] = useState(initialMatchState);
 
 
@@ -70,19 +76,62 @@ const MatchSettings = () => {
     const handleChange = (e) => {
         e.preventDefault();
         const { name, value } = e.target;
+        switch (name) {
+            case 'num_of_sets':
+                if (value > 5) {
+                    setMatchData(prevData => ({
+                        ...prevData,
+                        [name]: 5
+                    }));
+                }else if (value < 1) {
+                    setMatchData(prevData => ({
+                        ...prevData,
+                        [name]: 1
+                    }));
+                } else {
+                    setMatchData(prevData => ({
+                        ...prevData,
+                        [name]: value
+                    }));
+                }
+                break;
+            case 'game_point':
+            case 'interval_point':
+            case 'interval_time':
+            case 'game_cap':
 
-        setMatchData(prevData => ({
-            ...prevData,
-            [name]: value
-        }));
+                if (value < 1) {
+                    setMatchData(prevData => ({
+                        ...prevData,
+                        [name]: 1
+                    }));
+                } else {
+                    setMatchData(prevData => ({
+                        ...prevData,
+                        [name]: value
+                    }));
+                }
+                break;
+            default:
+                setMatchData(prevData => ({
+                    ...prevData,
+                    [name]: value
+                }));
+                break;
+        }
+
+        
     };
     
     const handleStartBtn = () => {
         dispatch(newMatch(matchData));
         // scorboards open
-        setMatchData(initialMatchState);
+        navigate('/match-operator');
+
     }
       
+
+    
 
   return (
     <div style={{height:'100vh'}} >
@@ -181,11 +230,11 @@ const MatchSettings = () => {
                                             label="Match Category"
                                             onChange={(e) => handleChange(e)}
                                         >
-                                            <MenuItem value={'MS'}>Men's singles</MenuItem>
-                                            <MenuItem value={'WS'}>Women's singles</MenuItem>
-                                            <MenuItem value={'MD'}>Men's doubles</MenuItem>
+                                            <MenuItem value={'MS'}>Men's Singles</MenuItem>
+                                            <MenuItem value={'WS'}>Women's Singles</MenuItem>
+                                            <MenuItem value={'MD'}>Men's Doubles</MenuItem>
                                             <MenuItem value={'WD'}>Women's Doubles</MenuItem>
-                                            <MenuItem value={'XD'}>Mixed doubles</MenuItem>
+                                            <MenuItem value={'XD'}>Mixed Doubles</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </Grid>
@@ -213,6 +262,7 @@ const MatchSettings = () => {
                                         value={matchData.num_of_sets}
                                         name='num_of_sets'
                                         onChange={(e) => handleChange(e)}
+                                        disabled
                                     />
                                 </Grid>
                                 <Grid item xs={12} md={4}>
@@ -246,6 +296,18 @@ const MatchSettings = () => {
                                         value={matchData.game_cap}
                                         name='game_cap'
                                         onChange={(e) => handleChange(e)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={4}>
+                                    <TextField 
+                                        label="Interval Time (min)" 
+                                        variant="outlined" 
+                                        style={{width:'100%'}} 
+                                        type='number' 
+                                        value={matchData.interval_time}
+                                        name='interval_time'
+                                        onChange={(e) => handleChange(e)}
+                                        // disabled
                                     />
                                 </Grid>
                             </Grid>

@@ -52,13 +52,13 @@ const Auth = () => {
 
           <div className={`overlay-left ${isActive?'overlay-left-active':''}`}>
               <h1>Welcome back</h1>
-              <p>To connect with us please Login</p>
+              <p>please Login</p>
               <button onClick={handleSignInPageClick} id="signIn">Sign In</button>
 
           </div>
           <div className={`overlay-right ${isActive?'overlay-right-active':''}`}>
-              <h1>Hello Friend</h1>
-              <p>Enter your details to Start journey with us</p>
+              <h1>First time ?</h1>
+              <p>Join Us</p>
               <button onClick={handleSignUpPageClick} id="signUp">Sign Up</button>
           </div>
       </div>

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
+// import { getIpAddress } from '../getIpAddress';
 import { useNavigate } from 'react-router-dom';
 
 const pages = ['New Match', 'Previous Matches'];
@@ -22,6 +23,7 @@ function NavBar() {
     // if is logged in false then remove avatar !!!!!!!!!!!!!!!!!
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [ipAddress, setIpAddress] = useState('');
   const navigate = useNavigate();
 
 
@@ -47,6 +49,26 @@ function NavBar() {
     navigate(`/${route}`)
   }
 
+  useEffect(() => {
+    // Function to retrieve IP address
+    const getIpAddress = async () => {
+      try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        setIpAddress(data.ip);
+      } catch (error) {
+        console.error('Error fetching IP address:', error);
+      }
+    };
+
+    // Call the function to retrieve IP address when component mounts
+    getIpAddress();
+
+    // Cleanup function
+    return () => {
+      // Any cleanup code here
+    };
+  }, []);
 
   return (
     <AppBar position="static">
@@ -124,7 +146,7 @@ function NavBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            BADMINTON
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -139,7 +161,14 @@ function NavBar() {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Typography
+              fontSize={14}
+              fontWeight={500}
+              style={{ padding:'0 20px 0 0' }}
+            >
+              {ipAddress}
+            </Typography>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
