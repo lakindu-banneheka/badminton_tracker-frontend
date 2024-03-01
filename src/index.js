@@ -4,12 +4,12 @@ import './index.css';
 import App from './App';
 import { store } from './app/store'
 import { Provider } from 'react-redux'
+import { Navigate } from "react-router-dom";
 
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import { Counter } from './routes/Counter';
 import Auth from './routes/Auth/Auth';
 import MatchSettings from './routes/MatchSettings/MatchSettings';
 import PreviousMatches from './routes/PreviousMatches/PreviousMatches';
@@ -18,7 +18,14 @@ import MatchOperator from './routes/MatchOperator/MatchOperator';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Auth />,
+    element: (
+      <>
+      { localStorage.getItem('token')
+        ?<Navigate to="/new-match" replace={true} />
+        :<Auth />
+      }
+      </>
+    ),
   },
   {
     path: '/new-match',

@@ -13,19 +13,17 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
-// import { getIpAddress } from '../getIpAddress';
 import { useNavigate } from 'react-router-dom';
 
 const pages = ['New Match', 'Previous Matches'];
-const settings = ['Profile', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Logout'];
 
 function NavBar() {
-    // if is logged in false then remove avatar !!!!!!!!!!!!!!!!!
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [ipAddress, setIpAddress] = useState('');
   const navigate = useNavigate();
-
+  let login_token = localStorage.getItem('token');
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -50,7 +48,6 @@ function NavBar() {
   }
 
   useEffect(() => {
-    // Function to retrieve IP address
     const getIpAddress = async () => {
       try {
         const response = await fetch('https://api.ipify.org?format=json');
@@ -61,13 +58,15 @@ function NavBar() {
       }
     };
 
-    // Call the function to retrieve IP address when component mounts
+    
     getIpAddress();
-
-    // Cleanup function
+    
     return () => {
-      // Any cleanup code here
     };
+  }, []);
+
+  useEffect(() => {
+    login_token = localStorage.getItem('token');
   }, []);
 
   return (
@@ -169,33 +168,58 @@ function NavBar() {
             >
               {ipAddress}
             </Typography>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+
+            <>
+            
+            { login_token
+              ?<>
+                <Tooltip title="Open settings">
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    sx={{ mt: '45px' }}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
+                  >
+                    {settings.map((setting) => (
+                      <MenuItem key={setting} 
+                        onClick={()=>{
+                          handleCloseUserMenu(); 
+                          if(setting=='Logout'){
+                            localStorage.removeItem('token');
+                            navigate('/');
+                          }}
+                        }
+                      >
+                        <Typography textAlign="center">{setting}</Typography>
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </>
+                :<>
+                  <Button
+                    // variant='contained'
+                    onClick={() => navigate('/')}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                    {'LOGIN'}
+                  </Button>
+                </>
+              }
+            </>
           </Box>
         </Toolbar>
       </Container>
