@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './style.css';
 import Typography from '@mui/material/Typography';
 import { useSelector } from 'react-redux';
+import { WEB_SOCKET_URL } from '../../baseURL';
 
 const Scoreboard = () => {
     const matchDataSelector = useSelector(state => state.match.matchData);
@@ -14,11 +15,18 @@ const Scoreboard = () => {
 
     
     useEffect(() => {
-        const ws = new WebSocket('ws://localhost:8080');
-        ws.onmessage = (event) => {
+        const socket = new WebSocket(WEB_SOCKET_URL);
+        socket.onopen = () => {
+            console.log('WebSocket connection established.');
+        };
+        socket.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
+
+        socket.onmessage = (event) => {
           const data = JSON.parse(event.data);
-          if (data.type == 'MATCH_UPDATE') {
-            const { timer } = data;
+          if (data.type == 'TIMER_UPDATE') {
+            const timer = data.timer;
             setSeconds(timer.seconds);
             setIntervalSeconds(timer.intervalSeconds);
             setIsIntervalActive(timer.isIntervalActive);
@@ -29,7 +37,7 @@ const Scoreboard = () => {
         };
     
         return () => {
-          ws.close();
+            socket.close();
         };
       }, []);
       

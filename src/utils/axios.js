@@ -1,10 +1,11 @@
 import axios from 'axios';
-import baseURL from '../baseURL';
+import { BASE_API_URL } from '../baseURL';
+
 
 // Define fetchData function
 const fetchData = async (method, endpoint, data) => {
     try {
-        const response = await fetch(`http://localhost:3001${endpoint}`, {
+        const response = await fetch(`${BASE_API_URL}${endpoint}`, {
             method: method,
             headers: {
                 'Content-Type': 'application/json'
