@@ -168,7 +168,7 @@ function NavBar() {
 
             <>
             
-            { localStorage.getItem('token')
+            { localStorage.getItem('userId')
               ?<>
                 <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -197,7 +197,7 @@ function NavBar() {
                           e.preventDefault();
                           handleCloseUserMenu(); 
                           if(setting=='Logout'){
-                            localStorage.removeItem('token');
+                            localStorage.removeItem('userId');
                             navigate('/');
                           }}
                         }

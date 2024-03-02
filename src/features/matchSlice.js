@@ -114,7 +114,7 @@ export const matchSlice = createSlice({
             winner: action.payload,
         }
       };
-      
+
       return newState;
     }
 

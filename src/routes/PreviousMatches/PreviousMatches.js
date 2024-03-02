@@ -12,6 +12,8 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import MatchDetailsModal from './MatchDetailsModal';
+import axios from 'axios';
+
 
 const PreviousMatches = () => {
   const [matchData, setMatchData] = useState([]);
@@ -20,13 +22,16 @@ const PreviousMatches = () => {
 
   // Fetch data from the database
   useEffect(() => {
-    // Fetch your data here and update matchData state
     const fetchData = async () => {
       try {
-        // Example fetch call
-        const response = await fetch('http://localhost:3001/matches/get');
-        const data = await response.json();
-        setMatchData(data);
+        const userId = localStorage.getItem('userId');
+        
+        console.log(userId); // Make sure userId is correct
+        const response = await axios.get(`http://localhost:3001/matches/get/${userId}`);
+        
+        if (response.status === 200) {
+          setMatchData(response.data);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -96,7 +101,7 @@ const PreviousMatches = () => {
                 backgroundColor: '#fff'
               }} 
             >
-              <Table sx={{ minWidth: 650, color: '#fff' }} aria-label="simple table">
+              <Table sx={{ minWidth: 650, color: '#fff' }} aria-label="a dense table">
                 <TableHead>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 'bold', width: '150px', color: '#fff' }}>Date</TableCell>

@@ -19,7 +19,7 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <>
-      { localStorage.getItem('token')
+      { localStorage.getItem('userId')
         ?<Navigate to="/new-match" replace={true} />
         :<Auth />
       }

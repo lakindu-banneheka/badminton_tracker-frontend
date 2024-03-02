@@ -13,10 +13,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { newMatch } from '../../features/matchSlice';
 import { getDate, getTime } from '../../Components/getDateTime';
 import { useNavigate } from 'react-router-dom';
+import RequiredFieldsModal from './RequiredFieldsModal';
 
 
 export const initialMatchState = {
-    userId: localStorage.getItem('token')??localStorage.getItem('token'),
+    userId: localStorage.getItem('userId')??localStorage.getItem('userId'),
     tournament_name: '',
     date: getDate(),
     time: getTime(),
@@ -54,6 +55,11 @@ const MatchSettings = () => {
     const navigate = useNavigate();
     // const userId = localStorage.getItem('token');
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
 
     // step form 
     const [step, setStep] = useState(1);
@@ -127,11 +133,35 @@ const MatchSettings = () => {
     };
     
     const handleStartBtn = () => {
-        dispatch(newMatch(matchData));
-        // scorboards open
-        navigate('/match-operator');
-
+        const requiredFields = [
+            'tournament_name',
+            'match_no',
+            'match_category',
+            'age_category',
+            'team1_player1_name',
+            'team2_player1_name',
+        ];
+    
+        const emptyFields = requiredFields.filter(field => !matchData[field]);
+    
+        if (matchData.match_category.charAt(1).toLowerCase() === 'd') {
+            if (!matchData['team1_player2_name']) {
+                emptyFields.push('team1_player2_name');
+            }
+            if (!matchData['team2_player2_name']) {
+                emptyFields.push('team2_player2_name');
+            }
+        }
+    
+        if (emptyFields.length > 0) {
+            setIsModalOpen(true);
+        } else {
+            dispatch(newMatch(matchData));
+            navigate('/match-operator');
+        }
     }
+    
+    
       
 
     
@@ -492,6 +522,11 @@ const MatchSettings = () => {
                 
             </div>
         </div> 
+        <RequiredFieldsModal
+            open={isModalOpen}
+            onClose={handleCloseModal}
+            requiredFields={['tournament_name', 'match_no', 'match_category', 'age_category','team1_player1_name','team1_player2_name','team2_player1_name','team2_player2_name']}
+        />
     </div>
   )
 }

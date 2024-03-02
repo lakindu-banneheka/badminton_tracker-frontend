@@ -6,15 +6,18 @@ import PauseIcon from '@mui/icons-material/Pause';
 import StopIcon from '@mui/icons-material/Stop';
 import { useSelector, useDispatch } from 'react-redux';
 import { endGame, nextSet, scoreChange_team_1, scoreChange_team_2 } from '../../features/matchSlice';
+import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
+import { addNewMatch } from '../../utils/axios';
 
 const MatchOperator = () => {
     
     const matchData = useSelector(state => state.match.matchData);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     let setNo = matchData.set_winner_i.length;
     let team1Points = matchData.team_1_game_points_set_i[setNo - 1];
@@ -223,10 +226,17 @@ const MatchOperator = () => {
     
     };
     
-    const startNewGame = () => {
-        // set the winner
-        dispatch(endGame(getGameWinner));
-        // 
+    const startNewGame = async () => {
+        dispatch(endGame(getGameWinner()));
+        
+        let newState = {
+            ...matchData,
+            winner: getGameWinner(),
+        };
+        // console.log('match data', newState)
+        await addNewMatch(newState);
+        
+        navigate('/new-match');
     }
 
     return(

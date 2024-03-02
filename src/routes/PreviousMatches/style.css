@@ -25,9 +25,7 @@
 
 /* Styling for the table rows */
 .MuiTableRow-root {
-  &:nth-of-type(odd) {
     background-color: #444;
-  }
 }
 
 /* Styling for the More Details button */
