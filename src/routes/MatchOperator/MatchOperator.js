@@ -13,8 +13,19 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import { addNewMatch } from '../../utils/axios';
 
+export const MATCH_STATUS = {
+    NOT_STARTED: 'NOT_STARTED',
+    IN_PROGRESS: 'IN_PROGRESS',
+    PAUSED: 'PAUSED',
+    COMPLETED: 'COMPLETED',
+    SUSPENDED: 'SUSPENDED',
+    CANCELLED: 'CANCELLED',
+    POSTPONED: 'POSTPONED'
+};
+
 const MatchOperator = () => {
     
+    let currentMatchStatus = MATCH_STATUS.NOT_STARTED;
     const matchData = useSelector(state => state.match.matchData);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -39,11 +50,9 @@ const MatchOperator = () => {
         setIsGameStarted(true);
         setIsGamePaused(false);
         toggleTimer();
-    } 
-
+    }
 
     const getSetWinner = () => {
-        // console.log(team1Points , team2Points)
 
         const isGap_2_Or_More = team1Points  <= 21 && team2Points <= 21 && Math.abs(team1Points - team2Points) >= 2; 
         if((team1Points == matchData.game_point && isGap_2_Or_More) || team1Points == matchData.game_cap){
@@ -233,11 +242,81 @@ const MatchOperator = () => {
             ...matchData,
             winner: getGameWinner(),
         };
-        // console.log('match data', newState)
         await addNewMatch(newState);
         
         navigate('/new-match');
     }
+
+
+    // web sockets -- timer
+    useEffect(() => {
+        const socket = new WebSocket('ws://localhost:8080');
+        const data = {
+            type: 'TIMER_UPDATE',
+            value: {
+                seconds,
+                intervalSeconds,
+                isIntervalActive
+            }
+        };
+        socket.addEventListener('open', () => {
+            socket.send(JSON.stringify(data));
+            socket.close();
+        });
+    }, [seconds,intervalSeconds,isIntervalActive])
+    
+
+    // web sockets -- match data
+    useEffect(() => {
+        const socket = new WebSocket('ws://localhost:8080');
+        const data = {
+            type: 'MATCH_UPDATE',
+            value: matchData
+        };
+        socket.addEventListener('open', () => {
+            socket.send(JSON.stringify(data));
+            socket.close();
+        });
+
+    }, [matchData]);
+
+
+    // web sockets -- match status
+    useEffect(() => {
+        const socket = new WebSocket('ws://localhost:8080');
+        
+        let isMatchOnGoing = isGameStarted && !isGamePaused && !isGameEnd && !isGameStoped;
+
+        const data = {
+            type: 'MATCH_STATUS',
+            value: isMatchOnGoing
+        };
+        socket.addEventListener('open', () => {
+            socket.send(JSON.stringify(data));
+            socket.close();
+        });
+
+    }, [isGameStarted,isGamePaused,isGameEnd,isGameStoped])
+
+        // web sockets -- MOBILE-score-update
+    useEffect(() => {
+    const ws = new WebSocket('ws://localhost:8080');
+    ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data.type == 'SCORE_UPDATE_MOBILE') {
+        if(data.score.team == 1){
+            dispatch(scoreChange_team_1(data.score.value))
+        } else if(data.score.team == 2){
+            dispatch(scoreChange_team_2(data.score.value))
+        }
+        }
+    };
+
+    return () => {
+        ws.close();
+    };
+    }, []);
+
 
     return(
         <div className="container">
@@ -340,7 +419,6 @@ const MatchOperator = () => {
                         variant="body1"
                         sx={{
                             fontWeight: 500,
-                            color: 'inherit',
                             fontSize: 20,
                             color:'rgba(255, 245, 245, 0.54)'
                         }}

@@ -13,6 +13,7 @@ import Auth from './routes/Auth/Auth';
 import MatchSettings from './routes/MatchSettings/MatchSettings';
 import PreviousMatches from './routes/PreviousMatches/PreviousMatches';
 import MatchOperator from './routes/MatchOperator/MatchOperator';
+import ScoreDisplay from './routes/ScoreDisplay/ScoreDisplay';
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
   {
     path: '/match-operator',
     element: <MatchOperator />
+  },
+  {
+    path: '/score-display',
+    element: <ScoreDisplay />
   }
 ]);
 
