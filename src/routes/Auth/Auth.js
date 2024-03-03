@@ -26,10 +26,6 @@ const Auth = () => {
     navigate('/new-match');
   }
 
-  const onClickSignIn = () => {
-    
-  }
-
   return (
     <div className='centered'> {/* center here */}
       <div id="container">
