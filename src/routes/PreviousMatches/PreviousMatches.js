@@ -64,7 +64,7 @@ const PreviousMatches = () => {
   return (
     <div style={{ height: '100vh' }}>
       <NavBar />
-      <div className='container_'>
+      <div className='container_' style={{overflowY: 'scroll'}} >
         <div className='title-wrapper'>
           <Typography
               variant="h4"
