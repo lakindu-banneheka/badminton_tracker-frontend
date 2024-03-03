@@ -157,13 +157,6 @@ function NavBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            <Button
-                onClick={() => { window.open('/score-display', '_blank'); }}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-                Score Window
-            </Button>
-
             <Typography
               fontSize={14}
               fontWeight={500}
@@ -171,6 +164,13 @@ function NavBar() {
             >
               {ipAddress}
             </Typography>
+
+            <Button
+                onClick={() => { window.open('/score-display', '_blank'); }}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+                Score Window
+            </Button>
 
             <>
             
