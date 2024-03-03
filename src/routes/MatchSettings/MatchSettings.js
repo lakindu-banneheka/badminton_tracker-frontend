@@ -316,6 +316,7 @@ const MatchSettings = () => {
                                         value={matchData.interval_point}
                                         name='interval_point'
                                         onChange={(e) => handleChange(e)}
+                                        disabled
                                     />
                                 </Grid>
                                 <Grid item xs={12} md={4}>
@@ -327,6 +328,7 @@ const MatchSettings = () => {
                                         value={matchData.game_point}
                                         name='game_point'
                                         onChange={(e) => handleChange(e)}
+                                        disabled
                                     />
                                 </Grid>
                                 <Grid item xs={12} md={4}>
@@ -338,6 +340,7 @@ const MatchSettings = () => {
                                         value={matchData.game_cap}
                                         name='game_cap'
                                         onChange={(e) => handleChange(e)}
+                                        disabled
                                     />
                                 </Grid>
                                 <Grid item xs={12} md={4}>
