@@ -157,6 +157,10 @@ const MatchSettings = () => {
             setIsModalOpen(true);
         } else {
             dispatch(newMatch(matchData));
+            // save data to online db 
+            // get match id 
+            // save localStorage --matchId
+
             navigate('/match-operator');
         }
     }

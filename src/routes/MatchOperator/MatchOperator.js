@@ -12,6 +12,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import { addNewMatch } from '../../utils/axios';
+import { WEB_SOCKET_URL } from '../../baseURL';
 
 export const MATCH_STATUS = {
     NOT_STARTED: 'NOT_STARTED',
@@ -250,7 +251,7 @@ const MatchOperator = () => {
 
     // web sockets -- timer
     useEffect(() => {
-        const socket = new WebSocket('ws://localhost:8080');
+        const socket = new WebSocket(WEB_SOCKET_URL);
         const data = {
             type: 'TIMER_UPDATE',
             value: {
@@ -268,7 +269,7 @@ const MatchOperator = () => {
 
     // web sockets -- match data
     useEffect(() => {
-        const socket = new WebSocket('ws://localhost:8080');
+        const socket = new WebSocket(WEB_SOCKET_URL);
         const data = {
             type: 'MATCH_UPDATE',
             value: matchData
@@ -283,7 +284,7 @@ const MatchOperator = () => {
 
     // web sockets -- match status
     useEffect(() => {
-        const socket = new WebSocket('ws://localhost:8080');
+        const socket = new WebSocket(WEB_SOCKET_URL);
         
         let isMatchOnGoing = isGameStarted && !isGamePaused && !isGameEnd && !isGameStoped;
 
@@ -298,9 +299,9 @@ const MatchOperator = () => {
 
     }, [isGameStarted,isGamePaused,isGameEnd,isGameStoped])
 
-        // web sockets -- MOBILE-score-update
+    // web sockets -- MOBILE-score-update
     useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8080');
+    const ws = new WebSocket(WEB_SOCKET_URL);
     ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
         if (data.type == 'SCORE_UPDATE_MOBILE') {
@@ -316,6 +317,38 @@ const MatchOperator = () => {
         ws.close();
     };
     }, []);
+
+
+    // if match has no data 
+    useEffect(() => {
+        validateMatchDataFields();
+    }, []);
+    const validateMatchDataFields = () => {
+        const requiredFields = [
+            'tournament_name',
+            'match_no',
+            'match_category',
+            'age_category',
+            'team1_player1_name',
+            'team2_player1_name',
+        ];
+    
+        const emptyFields = requiredFields.filter(field => !matchData[field]);
+    
+        if (matchData.match_category.charAt(1).toLowerCase() === 'd') {
+            if (!matchData['team1_player2_name']) {
+                emptyFields.push('team1_player2_name');
+            }
+            if (!matchData['team2_player2_name']) {
+                emptyFields.push('team2_player2_name');
+            }
+        }
+    
+        if (emptyFields.length > 0) {
+            navigate('/new-match');
+        }
+    }
+    
 
 
     return(

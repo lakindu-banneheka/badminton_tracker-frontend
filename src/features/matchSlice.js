@@ -32,7 +32,12 @@ export const initialState = {
     team_2_game_points_set_i: [0],
     set_winner_i: [-1],
     winner: -1
-  }
+  },
+  // timer: {
+  //   seconds: 0,
+  //   intervalSeconds: 0,
+  //   isIntervalActive: 0
+  // }
 }
 
 export const matchSlice = createSlice({
