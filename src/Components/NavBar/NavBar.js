@@ -13,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 // import AdbIcon from '@mui/icons-material/Adb';
 
+import { BASE_API_URL } from '../../baseURL';
 import { useNavigate } from 'react-router-dom';
 
 const pages = ['New Match', 'Previous Matches'];
@@ -24,7 +25,7 @@ const settings = [
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [ipAddress, setIpAddress] = useState('');
+  const [ipAddress, setIPAddress] = useState('');
   const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
@@ -50,20 +51,18 @@ function NavBar() {
   }
 
   useEffect(() => {
-    const getIpAddress = async () => {
+    const fetchLocalIPAddress = async () => {
       try {
-        const response = await fetch('https://api.ipify.org?format=json');
+        const response = await fetch(`${BASE_API_URL}/local-ip`);
         const data = await response.json();
-        setIpAddress(data.ip);
+        setIPAddress(data.localIpAddress);
       } catch (error) {
-        console.error('Error fetching IP address:', error);
+        console.error('Error fetching local IP address:', error);
+        setIPAddress('Unable to fetch local IP address');
       }
     };
 
-    getIpAddress();
-    
-    return () => {
-    };
+    fetchLocalIPAddress();
   }, []);
 
   return (
