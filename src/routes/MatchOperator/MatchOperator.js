@@ -54,15 +54,12 @@ const MatchOperator = () => {
     }
 
     const getSetWinner = () => {
-
-        const isGap_2_Or_More = team1Points  <= 21 && team2Points <= 21 && Math.abs(team1Points - team2Points) >= 2; 
-        if((team1Points == matchData.game_point && isGap_2_Or_More) || team1Points == matchData.game_cap){
-            // handleNextSet(1);
+        const isGap_2_Or_More = Math.abs(team1Points - team2Points) >= 2; 
+        if((team1Points >= matchData.game_point && isGap_2_Or_More) || team1Points >= matchData.game_cap){
             handleComfiremEndSet()
         } 
         
-        if(team2Points == matchData.game_point && isGap_2_Or_More || team2Points == matchData.game_cap) {
-            // handleNextSet(2);
+        if(team2Points >= matchData.game_point && isGap_2_Or_More || team2Points >= matchData.game_cap) {
             handleComfiremEndSet()
         }
     }
@@ -761,7 +758,7 @@ const MatchOperator = () => {
                                         className='timer-container' 
                                         style={{
                                             height: '60px',
-                                            backgroundColor: `${getGameWinner() == 1? 'rgba(210, 31, 31, 1)':(getGameWinner() == 1?'rgba(42, 66, 190, 1)':'#D21F1F')}`
+                                            backgroundColor: `${getGameWinner() == 1? 'rgba(210, 31, 31, 1)':(getGameWinner() == 2?'rgba(42, 66, 190, 1)':'#D21F1F')}`
                                         }} >
                                         <Typography
                                             variant="h6"
